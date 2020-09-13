@@ -22,7 +22,7 @@ Route::prefix('movie')->group(function (){
     Route::post('/edit',[\App\Http\Controllers\MovieController::class,'edit']);
     Route::get('/delete{id}',[\App\Http\Controllers\MovieController::class,'delete']);
     Route::get('/detail{id}',[\App\Http\Controllers\MovieController::class,'detail']);
-    Route::post('/search',[\App\Http\Controllers\MovieController::class,'search']);
+    Route::post('/search',[\App\Http\Controllers\MovieController::class,'search'])->name('search');
     Route::get('/comments{id}',[\App\Http\Controllers\CommentController::class,'movie_comment']);
 });
 Route::prefix('comment')->group(function () {
@@ -39,7 +39,8 @@ Route::prefix('user')->group(function () {
 Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
     Route::get('/test',[\App\Http\Controllers\MovieController::class,'test']);
 });
-Route::get('/test',[\App\Http\Controllers\MovieController::class,'all']);
+Route::get('/test',[\App\Http\Controllers\MovieController::class,'test']);
+Route::post('/test',[\App\Http\Controllers\MovieController::class,'pp'])->name('pp');
 //Route::post('/register',[\App\Actions\Fortify\CreateNewUser::class,'create']);
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');

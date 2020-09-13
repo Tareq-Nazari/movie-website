@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use MongoDB\Driver\Session;
+use function GuzzleHttp\Psr7\copy_to_string;
 
 class MovieController extends Controller
 {
@@ -26,7 +27,7 @@ class MovieController extends Controller
     {
         $movie = DB::table('movie')
             ->join('rate', 'movie.id', '=', 'rate.movie_id')
-            ->select('movie.*', 'category.name as janre', DB::raw('AVG(rate.rate) as rate '))
+            ->select('movie.*', DB::raw('AVG(rate.rate) as rate '))
             ->where('movie.id', $id)
             ->groupBy('movie.id')
             ->get();;
@@ -49,16 +50,17 @@ class MovieController extends Controller
             'p_year' => 'int',
         ]);
         $name = $request->name;
+        $janre = $request->janre;
         $id = $request->id;
         $summary = $request->summary;
         $movies = DB::table('movie')->join('rate', 'movie.id', '=', 'rate.movie_id')
-            ->join('movie_cat', 'movie.id', '=', 'movie_cat.movie_id')
-            ->join('category', 'movie_cat.cat_id', '=', 'category.id')
-            ->select('movie.*', 'category.name as janre', DB::raw('AVG(rate.rate) as rate '))
+            ->select('movie.*', DB::raw('AVG(rate.rate) as rate '))
             ->when($name, function ($query, $name) {
                 return $query->where('name', 'like', '%' . $name . '%');
             })->when($summary, function ($query, $summary) {
                 return $query->where('summary', 'like', '%' . $summary . '%');
+            })->when($janre, function ($query, $janre) {
+                return $query->where('janre', 'like', '%' . $janre . '%');
             })->when($id, function ($query, $id) {
                 return $query->where('movie.id', $id);
             })
@@ -195,9 +197,17 @@ class MovieController extends Controller
         }
     }
 
+    public function pp(Request $request)
+    {
+$p=$request->v;
+$p=implode(',', $p);
+        dd($p);
+
+    }
+
     public function test()
     {
-        \session(['p' => 'sddsdsd']);
+//        \session(['p' => 'sddsdsd']);
         return view('test');
     }
 }
