@@ -14,6 +14,7 @@ class MovieController extends Controller
 
 
 {
+
     public function editHome()
     {
         return view('adminDashboard/homeEdit');
@@ -79,6 +80,11 @@ class MovieController extends Controller
         $movies=null;
         return view('search')->with(['cats' => $cats,'movies'=>$movies]);
     }
+    public function review(){
+        $movie = DB::table('movie')->paginate(8);
+        $cats = DB::table('category')->get();
+        return view('review')->with(['movies' => $movie,'cats' => $cats]);
+    }
 
     public function search_form(Request $request)
     {
@@ -128,7 +134,7 @@ class MovieController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'quality' => 'required|string',
+
             'language' => 'required|string',
             'janre' => 'required|array',
             'product' => 'required|string',
@@ -160,8 +166,8 @@ class MovieController extends Controller
         $janre = $request->janre;
         $movie->janre = implode($janre, '.');
         if ($movie->save()) {
-            \session(['success' => 'فیلم اضافه شد']);
-            return "shod";
+            \session(['success1' => 'فیلم اضافه شد']);
+            return back();
         } else \session(['error' => 'خطا']);
         return "kam";
     }

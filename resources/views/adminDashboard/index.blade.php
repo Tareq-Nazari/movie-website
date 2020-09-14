@@ -5,14 +5,26 @@
 
 
 @if ($errors->any())
-    <div class="alert alert-danger">
+    <div id="alert" class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
         </ul>
     </div>
+
 @endif
+@if(session('success1'))
+
+    <div class="alert alert-success" role="alert">
+        {{session('success1')}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+@endif
+
 
         <form method="post" action="{{route('add_film')}}" enctype="multipart/form-data" dir="rtl">
             @csrf

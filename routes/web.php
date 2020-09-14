@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
+
 Route::get('/',[\App\Http\Controllers\MovieController::class,'home']);
 Route::get('/detail{id}',[\App\Http\Controllers\MovieController::class,'detail'])->name('detail');
 Route::get('/search_index',[\App\Http\Controllers\MovieController::class,'search_index'])->name('search');
@@ -25,9 +26,7 @@ Route::get('/about', function () {
 Route::get('/single', function () {
     return view('single');
 });
-Route::get('/review', function () {
-    return view('review');
-});
+Route::get('/review',[\App\Http\Controllers\MovieController::class,'review'] );
 Route::get('/search', function () {
     return view('search');
 });
@@ -36,6 +35,7 @@ Route::get('/offer', function () {
 });
 Route::prefix('dashboard')->group(function () {
     Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'],function () {
+
         Route::get('/', [\App\Http\Controllers\MovieController::class, 'index']);
         Route::get('/home',[\App\Http\Controllers\MovieController::class,'home']);
         Route::get('/editmovie', [\App\Http\Controllers\MovieController::class, 'editMovie']);

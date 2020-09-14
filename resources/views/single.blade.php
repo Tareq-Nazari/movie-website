@@ -4,19 +4,21 @@
         <div class="container">
             <div class="page">
                 <div class="breadcrumbs" dir="ltr">
-                    <a href="{{url('/')}}">Home</a>
-                    <a href="{{url('/review')}}">Movie Review</a>
+                    <a href="{{url('/')}}">خانه</a>
+                    <a href="{{url('/review')}}">فیلم</a>
                     <span>{{$movie[0]->name}}</span>
                 </div>
 
                 <div class="content" style="direction: rtl">
                     <div class="row">
                         <div class="col-md-6">
-                            <figure class="movie-poster"><img src="{{url('/images/'.$movie[0]->image)}}" alt="#"></figure>
+
+                            <figure class="movie-poster"><img style="height: 430px;width: 100%" src="{{asset('images/'.$movie[0]->image)}}" alt="#"></figure>
+
                         </div>
                         <div class="col-md-6">
                             <h2 class="movie-title">{{$movie[0]->name}}</h2>
-                            <div class="movie-summary">
+                            <div class="movie-summary" style="word-break: break-all">
                                 <p>{{$movie[0]->summary}} </p>
                             </div>
                             <ul class="movie-meta">
