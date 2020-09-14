@@ -32,11 +32,12 @@ Route::get('/search', function () {
     return view('search');
 });
 Route::prefix('dashboard')->group(function () {
-    Route::prefix('admin')->group(function () {
+    Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'],function () {
         Route::get('/', [\App\Http\Controllers\MovieController::class, 'index']);
         Route::get('/editmovie', [\App\Http\Controllers\MovieController::class, 'editMovie']);
         Route::get('/category', [\App\Http\Controllers\MovieController::class, 'category']);
         Route::get('/comments', [\App\Http\Controllers\MovieController::class, 'comments']);
+        Route::get('/edithome',[\App\Http\Controllers\MovieController::class, 'editHome']);
         Route::post('/add', [\App\Http\Controllers\MovieController::class, 'create']);
         Route::get('/all', [\App\Http\Controllers\MovieController::class, 'all']);
         Route::post('/edit', [\App\Http\Controllers\MovieController::class, 'edit']);

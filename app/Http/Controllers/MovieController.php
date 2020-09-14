@@ -11,7 +11,12 @@ use MongoDB\Driver\Session;
 use function GuzzleHttp\Psr7\copy_to_string;
 
 class MovieController extends Controller
+
+
 {
+    public function editHome(){
+        return view('adminDashboard/homeEdit');
+    }
     public function index()
     {
         return view('adminDashboard/index');
