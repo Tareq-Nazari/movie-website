@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/',[\App\Http\Controllers\MovieController::class,'all'])->name('index');
+Route::get('/',[\App\Http\Controllers\MovieController::class,'home']);
 Route::get('/detail{id}',[\App\Http\Controllers\MovieController::class,'detail'])->name('detail');
 Route::get('/search_index',[\App\Http\Controllers\MovieController::class,'search_index'])->name('search');
 Route::post('/search_form',[\App\Http\Controllers\MovieController::class,'search_form'])->name('search_form');
@@ -34,13 +34,14 @@ Route::get('/search', function () {
 Route::prefix('dashboard')->group(function () {
     Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'],function () {
         Route::get('/', [\App\Http\Controllers\MovieController::class, 'index']);
+        Route::get('/home',[\App\Http\Controllers\MovieController::class,'home']);
         Route::get('/editmovie', [\App\Http\Controllers\MovieController::class, 'editMovie']);
         Route::get('/category', [\App\Http\Controllers\AdminController::class, 'category']);
         Route::get('/deleteCategory{id}', [\App\Http\Controllers\AdminController::class, 'deleteCategory']);
         Route::post('/add_category', [\App\Http\Controllers\AdminController::class, 'add_category'])->name('add_category');
         Route::get('/comments', [\App\Http\Controllers\MovieController::class, 'comments']);
         Route::get('/edithome',[\App\Http\Controllers\MovieController::class, 'editHome']);
-        Route::post('/edithome{id}',[\App\Http\Controllers\AdminController::class, 'changeSlider']);
+        Route::post('/edit_home_movie',[\App\Http\Controllers\AdminController::class, 'changeSlider'])->name('edit_home_movie');
         Route::post('/add', [\App\Http\Controllers\MovieController::class, 'create'])->name('add_film');
         Route::get('/all', [\App\Http\Controllers\MovieController::class, 'all']);
         Route::get('/editIndex{id}', [\App\Http\Controllers\MovieController::class, 'edit_index']);

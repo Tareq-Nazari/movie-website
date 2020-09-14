@@ -50,6 +50,15 @@ class MovieController extends Controller
 
     }
 
+    public function home()
+    {
+        $movies = DB::table('movie')->whereIn('status',[1,2,3,4,5,6,7,8,9])
+            ->select('movie.id', 'movie.image', 'movie.name','movie.status as status')
+            ->get();
+        return view('/index')->with(['movies' => $movies]);
+
+
+    }
     public function detail($id)
     {
         $movie = DB::table('movie')

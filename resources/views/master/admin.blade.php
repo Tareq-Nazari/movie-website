@@ -73,6 +73,9 @@
                             <a href="{{url('/dashboard/admin/category')}}"><i class="fa fa-bars "></i>دسته بندی</a>
                         </li>
                         <li>
+                            <a href="{{url('/dashboard/admin/edithome')}}"><i class="fa fa-bars "></i>تغییر عکس های صفحه اصلی </a>
+                        </li>
+                        <li>
                             <a href="{{url('/dashboard/admin/edithome')}}"><i class="fa fa-home "></i>صفحه اصلی</a>
                         </li>
 
