@@ -52,7 +52,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost/movie-website/public/'),
+
+    'url' => env('APP_URL', 'http://localhost/kitetail/public'),
 
     'asset_url' => env('ASSET_URL', null),
 

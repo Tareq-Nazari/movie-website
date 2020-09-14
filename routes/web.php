@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', function () {
-
-    return view('index');
-});
+Route::get('/',[\App\Http\Controllers\MovieController::class,'all'])->name('index');
+Route::get('/detail{id}',[\App\Http\Controllers\MovieController::class,'detail'])->name('detail');
+Route::get('/search_index',[\App\Http\Controllers\MovieController::class,'search_index'])->name('search');
+Route::post('/search_form',[\App\Http\Controllers\MovieController::class,'search_form'])->name('search_form');
 Route::get('/about', function () {
     return view('about');
 });

@@ -14,9 +14,11 @@ class MovieController extends Controller
 
 
 {
-    public function editHome(){
+    public function editHome()
+    {
         return view('adminDashboard/homeEdit');
     }
+
     public function index()
     {
         return view('adminDashboard/index');
@@ -37,6 +39,7 @@ class MovieController extends Controller
     {
         return view('adminDashboard/editMovie');
     }
+
     public function all()
     {
         $movies = DB::table('movie')
@@ -44,7 +47,7 @@ class MovieController extends Controller
             ->select('movie.*', DB::raw('AVG(rate.rate) as rate '))
             ->groupBy('movie.id')
             ->get();
-        return view('')->with(['movies' => $movies]);
+        return view('index')->with(['movies' => $movies]);
 
     }
 
@@ -57,11 +60,18 @@ class MovieController extends Controller
             ->groupBy('movie.id')
             ->get();;
         $comments = DB::table('comment')->where('movie_id', $id)
-            ->select('comment.comment as comment')->get();
-        return view('')->with(['movie' => $movie, 'comments' => $comments]);
+            ->join('profile', 'comment.profile_id', '=', 'profile.id')
+            ->select('comment.comment as comment', 'profile.name as name')->get();
+        return view('single')->with(['movie' => $movie, 'comments' => $comments]);
     }
 
-    public function search(Request $request)
+    public function search_index()
+    {
+        $cats = DB::table('category')->get();
+        return view('search')->with(['cats' => $cats]);
+    }
+
+    public function search_form(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'string',
