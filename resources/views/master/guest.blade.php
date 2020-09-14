@@ -10,14 +10,14 @@
 
     <link rel="stylesheet" href="{{asset('style.css')}}">
 
-    @if(url()->current() == "http://localhost/kitetail/public/search_index")
+    @if(url()->current() == "http://localhost/movie-website/public/search_index")
         <link rel="stylesheet" href="{{asset('search.css')}}">
     @endif
 
 
     <link href="{{asset('fonts/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
 
-
+    <link href="{{asset('bootstrap.css')}}" rel="stylesheet" />
 
     <link rel="stylesheet" href="{{asset('style.css')}}">
 
