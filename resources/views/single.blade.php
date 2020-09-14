@@ -12,7 +12,9 @@
                 <div class="content" style="direction: rtl">
                     <div class="row">
                         <div class="col-md-6">
+
                             <figure class="movie-poster"><img style="height: 430px;width: 100%" src="{{asset('images/'.$movie[0]->image)}}" alt="#"></figure>
+
                         </div>
                         <div class="col-md-6">
                             <h2 class="movie-title">{{$movie[0]->name}}</h2>
