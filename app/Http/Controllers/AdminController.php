@@ -48,5 +48,8 @@ class AdminController extends Controller
         } else   session(['error' => 'حذف موفقیت ناموفق']);
         return view('');
     }
+    public function changeSlider(Request $request){
+
+    }
 
 }
