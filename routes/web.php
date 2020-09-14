@@ -15,10 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', function () {
-
-    return view('index');
-});
+Route::get('/',[\App\Http\Controllers\MovieController::class,'all'])->name('index');
+Route::get('/detail{id}',[\App\Http\Controllers\MovieController::class,'detail'])->name('detail');
 Route::get('/about', function () {
     return view('about');
 });

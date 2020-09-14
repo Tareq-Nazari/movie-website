@@ -39,7 +39,7 @@ class MovieController extends Controller
             ->select('movie.*', DB::raw('AVG(rate.rate) as rate '))
             ->groupBy('movie.id')
             ->get();
-        return view('')->with(['movies' => $movies]);
+        return view('index')->with(['movies' => $movies]);
 
     }
 
@@ -52,8 +52,9 @@ class MovieController extends Controller
             ->groupBy('movie.id')
             ->get();;
         $comments = DB::table('comment')->where('movie_id', $id)
-            ->select('comment.comment as comment')->get();
-        return view('')->with(['movie' => $movie, 'comments' => $comments]);
+            ->join('profile','comment.profile_id','=','profile.id')
+            ->select('comment.comment as comment','profile.name as name')->get();
+        return view('single')->with(['movie' => $movie, 'comments' => $comments]);
     }
 
     public function search(Request $request)
