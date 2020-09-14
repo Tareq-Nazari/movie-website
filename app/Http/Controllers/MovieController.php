@@ -21,7 +21,8 @@ class MovieController extends Controller
 
     public function index()
     {
-        return view('adminDashboard/index');
+        $cats = DB::table('category')->get();
+        return view('adminDashboard/index')->with(['cats' => $cats]);
     }
 
     public function category()
@@ -43,18 +44,16 @@ class MovieController extends Controller
     public function all()
     {
         $movies = DB::table('movie')
-            ->join('rate', 'movie.id', '=', 'rate.movie_id')
-            ->select('movie.*', DB::raw('AVG(rate.rate) as rate '))
-            ->groupBy('movie.id')
+            ->select('movie.id', 'movie.image', 'movie.name')
             ->get();
-        return view('index')->with(['movies' => $movies]);
+        return view('adminDashboard.allMovie')->with(['movies' => $movies]);
 
     }
 
     public function detail($id)
     {
         $movie = DB::table('movie')
-            ->join('rate', 'movie.id', '=', 'rate.movie_id')
+            ->leftJoin('rate', 'movie.id', '=', 'rate.movie_id')
             ->select('movie.*', DB::raw('AVG(rate.rate) as rate '))
             ->where('movie.id', $id)
             ->groupBy('movie.id')
@@ -73,7 +72,7 @@ class MovieController extends Controller
 
     public function search_form(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'name' => 'string',
             'quality' => 'string',
             'language' => 'string',
@@ -116,128 +115,139 @@ class MovieController extends Controller
 
     public function create(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'string',
-            'quality' => 'string',
-            'language' => 'string',
-            'janre' => 'string',
-            'product' => 'string',
-            'director' => 'string',
-            'actors' => 'string',
-            'summary' => 'string',
-            'trailler' => 'string',
-            'image' => 'string',
-            'p_year' => 'int',
+        $request->validate([
+            'name' => 'required|string',
+            'quality' => 'required|string',
+            'language' => 'required|string',
+            'janre' => 'required|array',
+            'product' => 'required|string',
+            'director' => 'required|string',
+            'actors' => 'required|string',
+            'summary' => 'required|string',
+            'trailler' => 'required|string',
+            'image' => 'required|image',
+            'p_year' => 'required|int',
         ]);
 
-        if (!$validator->fails()) {
-            $movie = new Movie();
-            $movie->language = $request->language;
-            $movie->quality = $request->quality;
-            $movie->actors = $request->actors;
-            $movie->image = image_store($request->image);
-            $movie->summary = $request->summary;
-            $movie->p_year = $request->p_year;
-            $movie->trailler = $request->trailler;
-            $movie->director = $request->director;
-            $movie->product = $request->product;
-            $movie->name = $request->name;
-            $movie->janre = $request->janre;
+
+        $movie = new Movie();
+        $movie->language = $request->language;
+        $movie->quality = $request->quality;
+        $movie->actors = $request->actors;
+        $image = $request->image;
+        $destination = base_path() . '/public/images/';
+        $filename = rand(111111111, 999999999) . '.' . $image->getClientOriginalExtension();
+        $file = $image;
+        $file->move($destination, $filename);
+        $movie->image = $filename;
+        $movie->summary = $request->summary;
+        $movie->p_year = $request->p_year;
+        $movie->trailler = $request->trailler;
+        $movie->director = $request->director;
+        $movie->product = $request->product;
+        $movie->name = $request->name;
+        $janre = $request->janre;
+        $movie->janre = implode($janre, '.');
+        if ($movie->save()) {
             \session(['success' => 'فیلم اضافه شد']);
-            return view('');
+            return "shod";
         } else \session(['error' => 'خطا']);
-        return view('');
+        return "kam";
     }
 
     public function delete($id)
     {
-        if (DB::table('movie')->where('id', $id)->delete()) {
+        if (DB::table('movie')->where('id', $id)->delete() && DB::table('comment')
+                ->where('movie_id', $id)->delete() && DB::table('rate')->where('movie_id', $id)->delete()) {
             \session(['success' => 'حذف موفقیت امیز بود']);
-            return view('');
+            return redirect('dashboard/admin/all');
         } else
             \session(['error' => 'مشکلی پیش امد']);
-        return view('');
+        return redirect('dashboard/admin/all');
     }
 
-    public function edit(Request $request)
+    public function edit_index($id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'string',
-            'quality' => 'string',
-            'language' => 'string',
-            'janre' => 'int',
-            'product' => 'string',
-            'director' => 'string',
-            'actors' => 'string',
-            'summary' => 'string',
-            'trailler' => 'string',
-            'image' => 'string',
-            'p_year' => 'int',
-            'id' => 'int',
+        $movie=DB::table('movie')->find($id);
+        $cats=DB::table('category')->get();
+        return view('adminDashboard.editMoviePage')->with(['movie'=>$movie,'cats'=>$cats]);
+    }
+
+    public function edit_form(Request $request)
+    {
+        $request->validate([
+            'name' => 'string|nullable',
+            'quality' => 'string|nullable',
+            'language' => 'string|nullable',
+            'janre' => 'array|nullable',
+            'product' => 'string|nullable',
+            'director' => 'string|nullable',
+            'actors' => 'string|nullable',
+            'summary' => 'string|nullable',
+            'trailler' => 'string|nullable',
+            'image' => 'string|nullable',
+            'p_year' => 'int|nullable',
+            'id' => 'int|nullable',
         ]);
-
-        if (!$validator->fails()) {
             $movie = DB::table('movie')->find($request->id);
-            if ($request->language) {
-                $language = $request->language;
-            } else $language = $movie->language;
-            if ($request->quality) {
-                $quality = $request->quality;
-            } else $quality = $movie->quality;
-
-            if ($request->actors) {
-                $actors = $request->actors;
-            } else $actors = $movie->actors;
-            if ($request->image) {
-                $pic = $request->image;
-                $destination = base_path() . '/public/img/';
-                $filename = rand(111111111, 999999999) . '.' . $pic->getClientOriginalExtension();
-                $file = $pic;
-                $file->move($destination, $filename);
-                $image = $filename;
-            } else $pic = $movie->image;
-            if ($request->summary) {
-                $summary = $request->summary;
-            } else $summary = $movie->summary;
-            if ($request->p_year) {
-                $p_year = $request->p_year;
-            } else $p_year = $movie->p_year;
-            if ($request->trailer) {
-                $trailler = $request->trailer;
-            } else$trailler = $movie->trailler;
-            if ($request->director) {
-                $director = $request->director;
-            } else $trailler = $movie->trailler;
-            if ($request->product) {
-                $product = $request->product;
-            } else $product = $movie->product;
-            if ($request->name) {
-                $name = $request->name;
-            } else $name = $movie->name;
-            if ($request->janre) {
-                $janre = $request->janre;
-            }
-            if (DB::table('movie')->where('id', $request->id)->update([
-                'name' => $name,
-                'quality' => $quality,
-                'language' => $language,
-                'product' => $product,
-                'director' => $director,
-                'actors' => $actors,
-                'summary' => $summary,
-                'trailler' => $trailler,
-                'image' => $image,
-                'p_year' => $p_year,
-                'janre' => $janre,
+        if ($request->language) {
+            $language = $request->language;
+        } else $language = $movie->language;
 
 
-            ])) {
-                \session(['success' => 'اپدیت موفقیت امیز']);
-                return view('');
-            }
-            \session(['error' => 'مشکلی پیش امد']);
-            return view('');
+        if ($request->actors) {
+            $actors = $request->actors;
+        } else $actors = $movie->actors;
+        if ($request->image) {
+            $pic = $request->image;
+            $destination = base_path() . '/public/images/';
+            $filename = rand(111111111, 999999999) . '.' . $pic->getClientOriginalExtension();
+            $file = $pic;
+            $file->move($destination, $filename);
+            $image = $filename;
+        } else $pic = $movie->image;
+        if ($request->summary) {
+            $summary = $request->summary;
+        } else $summary = $movie->summary;
+        if ($request->p_year) {
+            $p_year = $request->p_year;
+        } else $p_year = $movie->p_year;
+        if ($request->trailer) {
+            $trailler = $request->trailer;
+        } else$trailler = $movie->trailler;
+        if ($request->director) {
+            $director = $request->director;
+        } else $director = $movie->director;
+        if ($request->product) {
+            $product = $request->product;
+        } else $product = $movie->product;
+        if ($request->name) {
+            $name = $request->name;
+        } else $name = $movie->name;
+        if ($request->janre) {
+            $janre = $request->janre;
+            $janre=implode($janre,'.');
+        }else $janre=$movie->janre;
+        if (DB::table('movie')->where('id', $request->id)->update([
+            'name' => $name,
+            'language' => $language,
+            'product' => $product,
+            'director' => $director,
+            'actors' => $actors,
+            'summary' => $summary,
+            'trailler' => $trailler,
+            'image' => $pic,
+            'p_year' => $p_year,
+            'janre' => $janre,
+
+
+        ])) {
+            \session(['success' => 'اپدیت موفقیت امیز']);
+            return redirect('dashboard/admin/detail'.$request->id);
         }
+        \session(['error' => 'مشکلی پیش امد']);
+        return redirect('dashboard/admin/editIndex'.$request->id);
+
     }
 
     public function pp(Request $request)

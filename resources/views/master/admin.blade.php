@@ -66,11 +66,9 @@
                             <a href="{{url('/dashboard/admin')}}"><i class="fa fa-plus"></i>افزودن فیلم</a>
                         </li>
                         <li>
-                            <a href="{{url('/dashboard/admin/editmovie')}}"><i class="fa fa-edit "></i>ویرایش فیلم</a>
+                            <a href="{{url('/dashboard/admin/all')}}"><i class="fa fa-edit "></i> همه ی فیلم ها</a>
                         </li>
-                        <li>
-                            <a href="{{url('/dashboard/admin/comments')}}"><i class="fa fa-comment "></i>نظرات</a>
-                        </li>
+
                         <li>
                             <a href="{{url('/dashboard/admin/category')}}"><i class="fa fa-bars "></i>دسته بندی</a>
                         </li>
