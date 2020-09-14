@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Rate;
 use App\User;
 use http\Env\Response;
 use Illuminate\Contracts\Validation\Validator;
@@ -96,19 +97,19 @@ class UserController extends Controller
     {
         $request->validate( [
             'comment' => 'required|string',
-            'id' => 'required|int',
+            'movie_id' => 'required|int',
         ]);
 
         $comment = new Comment();
         $comment->movie_id = $request->movie_id;
         $comment->comment = $request->comment;
-        $comment->profile_id=DB::table('profiles')->where('user_id',Auth::user()->id)->value('id');
+        $comment->profile_id=DB::table('profile')->where('user_id',Auth::user()->id)->value('id');
         if ($comment->save()) {
             session(['success' => 'کامنت ثبت شد']);
-            return view('');
+            return redirect('detail'.$request->movie_id);
         } else
             session(['error' => 'کامنت ثبت نشد']);
-        return view('');
+        return redirect('detail'.$request->movie_id);
 
     }
 
@@ -116,21 +117,22 @@ class UserController extends Controller
     {
         $request->validate( [
             'movie_id' => 'required|int',
-            'rate' => 'required|int',
+            'rate' => 'required|between:0,10.0000',
         ]);
+
         $profile_id = DB::table('profile')->where('user_id', Auth::user()->id)->value('id');
         $duplicate = DB::table('rate')->where('profile_id', $profile_id)
             ->where('movie_id', $request->movie_id)->delete();
-        $rate = new Comment();
+        $rate = new Rate();
         $rate->movie_id = $request->movie_id;
         $rate->profile_id = $profile_id;
         $rate->rate = $request->rate;
         if ($rate->save()) {
-            session(['success' => 'رای ثبت شد']);
-            return view('');
+            session(['success' => 'امتیاز ثبت شد']);
+            return redirect('detail'.$request->movie_id);
         } else
-            session(['error' => 'رای ثبت نشد']);
-        return view('');
+            session(['error' => 'امتیاز ثبت نشد']);
+        return redirect('detail'.$request->movie_id);
 
 
     }

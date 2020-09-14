@@ -61,10 +61,10 @@ Route::prefix('comment')->group(function () {
 
 });
 Route::prefix('user')->group(function () {
-    Route::post('/add_comment',[\App\Http\Controllers\UserController::class,'add_comment']);
+    Route::post('/addComment',[\App\Http\Controllers\UserController::class,'add_comment'])->middleware('auth');
     Route::get('/profile',[\App\Http\Controllers\UserController::class,'profile']);
     Route::post('/edit_profile',[\App\Http\Controllers\UserController::class,'edit_profile']);
-    Route::post('/add_rate',[\App\Http\Controllers\UserController::class,'add_rate']);
+    Route::post('/addRate',[\App\Http\Controllers\UserController::class,'add_rate'])->middleware('auth');
 
 });
 Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
