@@ -13,17 +13,38 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::get('/', function () {
-    return view('welcome');
-})->name('/');
-Route::prefix('movie')->group(function (){
-    Route::post('/add',[\App\Http\Controllers\MovieController::class,'create']);
-    Route::get('/all',[\App\Http\Controllers\MovieController::class,'all']);
-    Route::post('/edit',[\App\Http\Controllers\MovieController::class,'edit']);
-    Route::get('/delete{id}',[\App\Http\Controllers\MovieController::class,'delete']);
-    Route::get('/detail{id}',[\App\Http\Controllers\MovieController::class,'detail']);
-    Route::post('/search',[\App\Http\Controllers\MovieController::class,'search'])->name('search');
-    Route::get('/comments{id}',[\App\Http\Controllers\CommentController::class,'movie_comment']);
+
+    return view('index');
+});
+Route::get('/about', function () {
+    return view('about');
+});
+Route::get('/single', function () {
+    return view('single');
+});
+Route::get('/review', function () {
+    return view('review');
+});
+Route::get('/search', function () {
+    return view('search');
+});
+Route::prefix('dashboard')->group(function () {
+    Route::prefix('admin')->group(function () {
+        Route::get('/', [\App\Http\Controllers\MovieController::class, 'index']);
+        Route::get('/editmovie', [\App\Http\Controllers\MovieController::class, 'editMovie']);
+        Route::get('/category', [\App\Http\Controllers\MovieController::class, 'category']);
+        Route::get('/comments', [\App\Http\Controllers\MovieController::class, 'comments']);
+        Route::post('/add', [\App\Http\Controllers\MovieController::class, 'create']);
+        Route::get('/all', [\App\Http\Controllers\MovieController::class, 'all']);
+        Route::post('/edit', [\App\Http\Controllers\MovieController::class, 'edit']);
+        Route::get('/delete{id}', [\App\Http\Controllers\MovieController::class, 'delete']);
+        Route::get('/detail{id}', [\App\Http\Controllers\MovieController::class, 'detail']);
+        Route::post('/search', [\App\Http\Controllers\MovieController::class, 'search']);
+        Route::get('/comments{id}', [\App\Http\Controllers\CommentController::class, 'movie_comment']);
+    });
 });
 Route::prefix('comment')->group(function () {
     Route::get('/delete{id}',[\App\Http\Controllers\CommentController::class,'delete']);

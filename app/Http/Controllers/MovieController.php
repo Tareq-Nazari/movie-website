@@ -12,6 +12,26 @@ use function GuzzleHttp\Psr7\copy_to_string;
 
 class MovieController extends Controller
 {
+    public function index()
+    {
+        return view('adminDashboard/index');
+    }
+
+    public function category()
+    {
+        return view('adminDashboard/category');
+    }
+
+    public function comments()
+    {
+        return view('adminDashboard/comments');
+    }
+
+
+    public function editMovie()
+    {
+        return view('adminDashboard/editMovie');
+    }
     public function all()
     {
         $movies = DB::table('movie')
