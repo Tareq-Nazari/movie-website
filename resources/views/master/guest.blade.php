@@ -6,8 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
 
     <title>Movie Review</title>
+    <link href="{{asset('fonts/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
 
-    <link href="{{'fonts/font-awesome.min.css'}}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{asset('style.css')}}">
+
+    @if(url()->current() == "http://localhost/kitetail/public/search_index")
+        <link rel="stylesheet" href="{{asset('search.css')}}">
+    @endif
+
+
+    <link href="{{asset('fonts/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+
+
 
     <link rel="stylesheet" href="{{asset('style.css')}}">
 

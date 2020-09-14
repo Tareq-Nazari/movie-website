@@ -11,7 +11,14 @@ use MongoDB\Driver\Session;
 use function GuzzleHttp\Psr7\copy_to_string;
 
 class MovieController extends Controller
+
+
 {
+    public function editHome()
+    {
+        return view('adminDashboard/homeEdit');
+    }
+
     public function index()
     {
         return view('adminDashboard/index');
@@ -32,6 +39,7 @@ class MovieController extends Controller
     {
         return view('adminDashboard/editMovie');
     }
+
     public function all()
     {
         $movies = DB::table('movie')
@@ -52,12 +60,18 @@ class MovieController extends Controller
             ->groupBy('movie.id')
             ->get();;
         $comments = DB::table('comment')->where('movie_id', $id)
-            ->join('profile','comment.profile_id','=','profile.id')
-            ->select('comment.comment as comment','profile.name as name')->get();
+            ->join('profile', 'comment.profile_id', '=', 'profile.id')
+            ->select('comment.comment as comment', 'profile.name as name')->get();
         return view('single')->with(['movie' => $movie, 'comments' => $comments]);
     }
 
-    public function search(Request $request)
+    public function search_index()
+    {
+        $cats = DB::table('category')->get();
+        return view('search')->with(['cats' => $cats]);
+    }
+
+    public function search_form(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'string',
