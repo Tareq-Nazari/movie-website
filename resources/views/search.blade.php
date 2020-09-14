@@ -86,22 +86,25 @@
                             </div>
 
                     </div>
+                </div>
             </form>
 
         </div>
 
     </div>
     <div style="background-color: white;width: 100%;display: flex;flex-wrap: wrap;padding: 20px">
-        @for($i=0;$i<10;$i++)
+        @if($movies)
+        @foreach($movies as $movie)
             <div class="card" style="width: 18rem;margin: 25px">
-                <img class="card-img-top" style="height: 150px;width: 150px" src="{{asset('images/baelen.jpg')}}" alt="Card image cap">
+                <img class="card-img-top" style="height: 150px;width: 150px" src="{{url('/images/'.$movie->image)}}" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">Card title</h5>
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-danger">مشاهده فیلم</a>
+                    <a href="{{url('detail'.$movie->id)}}" class="btn btn-danger">مشاهده فیلم</a>
                 </div>
             </div>
-        @endfor
+        @endforeach
+            @endif
     </div>
     <script>
        function showJanre(){

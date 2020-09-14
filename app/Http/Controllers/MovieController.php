@@ -76,24 +76,26 @@ class MovieController extends Controller
     public function search_index()
     {
         $cats = DB::table('category')->get();
-        return view('search')->with(['cats' => $cats]);
+        $movies=null;
+        return view('search')->with(['cats' => $cats,'movies'=>$movies]);
     }
 
     public function search_form(Request $request)
     {
         $request->validate([
-            'name' => 'string',
-            'quality' => 'string',
-            'language' => 'string',
-            'janre' => 'string',
-            'product' => 'string',
-            'director' => 'string',
-            'actors' => 'string',
-            'summary' => 'string',
-            'trailler' => 'string',
-            'image' => 'string',
-            'p_year' => 'int',
+            'name' => 'nullable|string',
+            'quality' => 'nullable|string',
+            'language' => 'nullable|string',
+            'janre' => 'nullable|string',
+            'product' => 'nullable|string',
+            'director' => 'nullable|string',
+            'actors' => 'nullable|string',
+            'summary' => 'nullable|string',
+            'trailler' => 'nullable|string',
+            'image' => 'nullable|string',
+            'p_year' => 'nullable|int',
         ]);
+        $cats = DB::table('category')->get();
         $name = $request->name;
         $janre = $request->janre;
         $id = $request->id;
@@ -118,7 +120,7 @@ class MovieController extends Controller
             ->groupBy('movie.id')
             ->get();
 
-        return view()->with(['movies' => $movies]);
+        return view('search')->with(['movies' => $movies,'cats'=>$cats]);
 
     }
 
