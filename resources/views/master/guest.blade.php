@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="{{asset('style.css')}}">
 
-    @if(url()->current() == "http://localhost/kitetail/public/search_index")
+    @if(url()->current() == "http://localhost/kitetail/public/search_index" || url()->current() == "http://localhost/kitetail/public/search_form")
         <link rel="stylesheet" href="{{asset('search.css')}}">
     @endif
 

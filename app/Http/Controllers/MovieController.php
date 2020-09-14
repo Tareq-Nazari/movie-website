@@ -108,7 +108,7 @@ class MovieController extends Controller
         $director = $request->director;
         $actors = $request->actors;
         $summary = $request->summary;
-        $movies = DB::table('movie')->join('rate', 'movie.id', '=', 'rate.movie_id')
+        $movies = DB::table('movie')->leftJoin('rate', 'movie.id', '=', 'rate.movie_id')
             ->select('movie.*', DB::raw('AVG(rate.rate) as rate '))
             ->when($name, function ($query, $name) {
                 return $query->where('name', 'like', '%' . $name . '%');
