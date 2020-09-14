@@ -94,7 +94,7 @@ class UserController extends Controller
 
     public function add_comment(Request $request)
     {
-        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+        $request->validate( [
             'comment' => 'required|string',
             'id' => 'required|int',
         ]);
@@ -114,7 +114,7 @@ class UserController extends Controller
 
     public function add_rate(Request $request)
     {
-        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+        $request->validate( [
             'movie_id' => 'required|int',
             'rate' => 'required|int',
         ]);
@@ -149,7 +149,7 @@ class UserController extends Controller
 
     public function edit_profile(Request $request)
     {
-        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+        $request->validate( [
             'email' => 'email|unique:App\User|',
             'password' => 'password',
             'name' => 'string|max:255',
@@ -161,7 +161,7 @@ class UserController extends Controller
 
         $profile = DB::table('profile')->find('user_id', Auth::user()->id);
         $email = DB::table('user')->find('id', Auth::user()->id)->value('email');
-        if (!$validator->fails()) {
+
 
             if ($request->email) {
                 $email = $request->email;
@@ -197,7 +197,7 @@ class UserController extends Controller
                 session(['success' => 'ادیت موفقیت امیز']);
                 return view('');
             }
-        } else
+         else
             session(['error' => 'ادیت ناموفق']);
         return view('');
 

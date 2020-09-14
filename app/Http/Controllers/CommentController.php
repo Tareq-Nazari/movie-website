@@ -35,7 +35,7 @@ class CommentController extends Controller
 
     public function search(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate( [
             'id' => 'int',
             'movie_id' => 'int',
             'profile_id' => 'int',
