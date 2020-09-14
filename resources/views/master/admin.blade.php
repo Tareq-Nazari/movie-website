@@ -63,7 +63,7 @@
                     <a href="#"><i class="fa fa-desktop "></i>منو </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="{{url('/dashboard/admin')}}"><i class="fa fa-plus"></i>افزودن فیلم</a>
+                            <a href="{{url('/dashboard/admin/')}}"><i class="fa fa-plus"></i>افزودن فیلم</a>
                         </li>
                         <li>
                             <a href="{{url('/dashboard/admin/all')}}"><i class="fa fa-edit "></i> همه ی فیلم ها</a>
@@ -74,6 +74,9 @@
                         </li>
                         <li>
                             <a href="{{url('/dashboard/admin/edithome')}}"><i class="fa fa-home "></i>صفحه اصلی</a>
+                        </li>
+                        <li>
+                            <a href="{{url('/')}}"><i class="fa fa-check "></i>سایت</a>
                         </li>
 
 

@@ -1,78 +1,30 @@
 @extends('master/guest')
 @section('content')
     <main class="main-content">
+
         <div class="container">
             <div class="page">
                 <div class="breadcrumbs">
-                    <a href="index.html">Home</a>
-                    <span>Movie Review</span>
+                    <a href="{{url('/')}}">خانه</a>
+                    <span>فیلم ها</span>
                 </div>
 
-                <div class="filters">
-                    <select name="#" id="#" placeholder="Choose Category">
-                        <option value="#">Action</option>
-                        <option value="#">Drama</option>
-                        <option value="#">Fantasy</option>
-                        <option value="#">Horror</option>
-                        <option value="#">Adventure</option>
-                    </select>
-                    <select name="#" id="#">
-                        <option value="#">2012</option>
-                        <option value="#">2013</option>
-                        <option value="#">2014</option>
-                    </select>
-                </div>
-                <div class="movie-list">
+                <div class="movie-list" dir="rtl">
+                    @foreach($movies as $movie)
                     <div class="movie">
-                        <figure class="movie-poster"><img src="{{asset('dummy/thumb-3.jpg')}}" alt="#"></figure>
-                        <div class="movie-title"><a href="single.html">Maleficient</a></div>
-                        <p>Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.</p>
+                        <figure class="movie-poster"><img src="{{asset('images/'.$movie->image)}}" style="width: 200px;height: 200px" alt="#"></figure>
+                        <div class="movie-title"><a href="{{url('/detail'.$movie->id)}}">{{$movie->name}}</a></div>
+                        <p>{{substr($movie->summary,0,20).'...'}}</p>
                     </div>
-                    <div class="movie">
-                        <figure class="movie-poster"><img src="{{asset('dummy/thumb-4.jpg')}}" alt="#"></figure>
-                        <div class="movie-title"><a href="single.html">The adventure of Tintin</a></div>
-                        <p>Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.</p>
-                    </div>
-                    <div class="movie">
-                        <figure class="movie-poster"><img src="{{asset('dummy/thumb-5.jpg')}}" alt="#"></figure>
-                        <div class="movie-title"><a href="single.html">Hobbit</a></div>
-                        <p>Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.</p>
-                    </div>
-                    <div class="movie">
-                        <figure class="movie-poster"><img src="{{asset('dummy/thumb-6.jpg')}}" alt="#"></figure>
-                        <div class="movie-title"><a href="single.html">Exists</a></div>
-                        <p>Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.</p>
-                    </div>
-                    <div class="movie">
-                        <figure class="movie-poster"><img src="{{asset('dummy/thumb-1.jpg')}}" alt="#"></figure>
-                        <div class="movie-title"><a href="single.html">Drive hard</a></div>
-                        <p>Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.</p>
-                    </div>
-                    <div class="movie">
-                        <figure class="movie-poster"><img src="{{asset('dummy/thumb-2.jpg')}}" alt="#"></figure>
-                        <div class="movie-title"><a href="single">Robocop</a></div>
-                        <p>Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.</p>
-                    </div>
-                    <div class="movie">
-                        <figure class="movie-poster"><img src="{{asset('dummy/thumb-7.jpg')}}" alt="#"></figure>
-                        <div class="movie-title"><a href="single">Life of Pi</a></div>
-                        <p>Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.</p>
-                    </div>
-                    <div class="movie">
-                        <figure class="movie-poster"><img src="{{asset('dummy/thumb-8.jpg')}}" alt="#"></figure>
-                        <div class="movie-title"><a href="single">The Colony</a></div>
-                        <p>Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.</p>
-                    </div>
+                    @endforeach
+
+
                 </div> <!-- .movie-list -->
 
                 <div class="pagination">
-                    <a href="#" class="page-number prev"><i class="fa fa-angle-left"></i></a>
-                    <span class="page-number current">1</span>
-                    <a href="#" class="page-number">2</a>
-                    <a href="#" class="page-number">3</a>
-                    <a href="#" class="page-number">4</a>
-                    <a href="#" class="page-number">5</a>
-                    <a href="#" class="page-number next"><i class="fa fa-angle-right"></i></a>
+
+                   {{$movies->links()}}
+
                 </div>
             </div>
         </div> <!-- .container -->
