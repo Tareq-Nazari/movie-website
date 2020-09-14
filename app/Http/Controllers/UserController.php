@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Profiler\Profile;
+use const http\Client\Curl\AUTH_ANY;
 
 
 class UserController extends Controller
@@ -101,6 +102,7 @@ class UserController extends Controller
         $comment = new Comment();
         $comment->movie_id = $request->movie_id;
         $comment->comment = $request->comment;
+        $comment->profile_id=DB::table('profiles')->where('user_id',Auth::user()->id)->value('id');
         if ($comment->save()) {
             session(['success' => 'کامنت ثبت شد']);
             return view('');
@@ -116,7 +118,7 @@ class UserController extends Controller
             'movie_id' => 'required|int',
             'rate' => 'required|int',
         ]);
-        $profile_id = DB::table('profile')->where('user_id', Auth::user()->id);
+        $profile_id = DB::table('profile')->where('user_id', Auth::user()->id)->value('id');
         $duplicate = DB::table('rate')->where('profile_id', $profile_id)
             ->where('movie_id', $request->movie_id)->delete();
         $rate = new Comment();

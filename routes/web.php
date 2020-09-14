@@ -39,8 +39,8 @@ Route::prefix('user')->group(function () {
 Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
     Route::get('/test',[\App\Http\Controllers\MovieController::class,'test']);
 });
-Route::get('/test',[\App\Http\Controllers\MovieController::class,'test']);
-Route::post('/test',[\App\Http\Controllers\MovieController::class,'pp'])->name('pp');
+//Route::get('/test',[\App\Http\Controllers\MovieController::class,'test']);
+Route::get('/test{id}',[\App\Http\Controllers\MovieController::class,'detail'])->name('pp');
 //Route::post('/register',[\App\Actions\Fortify\CreateNewUser::class,'create']);
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');

@@ -31,7 +31,9 @@ class MovieController extends Controller
             ->where('movie.id', $id)
             ->groupBy('movie.id')
             ->get();;
-        return view('')->with(['movie' => $movie]);
+        $comments = DB::table('comment')->where('movie_id', $id)
+            ->select('comment.comment as comment')->get();
+        return view('')->with(['movie' => $movie, 'comments' => $comments]);
     }
 
     public function search(Request $request)
@@ -52,13 +54,19 @@ class MovieController extends Controller
         $name = $request->name;
         $janre = $request->janre;
         $id = $request->id;
+        $director = $request->director;
+        $actors = $request->actors;
         $summary = $request->summary;
         $movies = DB::table('movie')->join('rate', 'movie.id', '=', 'rate.movie_id')
             ->select('movie.*', DB::raw('AVG(rate.rate) as rate '))
             ->when($name, function ($query, $name) {
                 return $query->where('name', 'like', '%' . $name . '%');
+            })->when($actors, function ($query, $actors) {
+                return $query->where('actors', 'like', '%' . $actors . '%');
             })->when($summary, function ($query, $summary) {
                 return $query->where('summary', 'like', '%' . $summary . '%');
+            })->when($director, function ($query, $director) {
+                return $query->where('director', 'like', '%' . $director . '%');
             })->when($janre, function ($query, $janre) {
                 return $query->where('janre', 'like', '%' . $janre . '%');
             })->when($id, function ($query, $id) {
@@ -67,7 +75,7 @@ class MovieController extends Controller
             ->groupBy('movie.id')
             ->get();
 
-        dd($movies);
+        return view()->with(['movies' => $movies]);
 
     }
 
@@ -199,8 +207,8 @@ class MovieController extends Controller
 
     public function pp(Request $request)
     {
-$p=$request->v;
-$p=implode(',', $p);
+        $p = $request->v;
+        $p = implode(',', $p);
         dd($p);
 
     }
