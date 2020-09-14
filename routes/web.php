@@ -31,6 +31,9 @@ Route::get('/review', function () {
 Route::get('/search', function () {
     return view('search');
 });
+Route::get('/offer', function () {
+    return view('offer');
+});
 Route::prefix('dashboard')->group(function () {
     Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'],function () {
         Route::get('/', [\App\Http\Controllers\MovieController::class, 'index']);

@@ -46,7 +46,7 @@
                     <li class="menu-item"><a href="about">درباره ما</a></li>
                     <li class="menu-item"><a href="review">فیلم ها</a></li>
                     <li class="menu-item"><a href="joinus">Join us</a></li>
-                    <li class="menu-item"><a href="contact">پیشنهاد فیلم</a></li>
+                    <li class="menu-item"><a href="offer">پیشنهاد فیلم</a></li>
                 </ul> <!-- .menu -->
 
                 <form action="#" class="search-form">
